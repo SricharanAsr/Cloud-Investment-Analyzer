@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InvestVision AI — Portfolio Analyzer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0d0e12;
+            color: #e5e7eb;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Background Glow */
+        .bg-glow-1 {
+            position: fixed;
+            top: -100px;
+            right: -100px;
+            width: 500px;
+            height: 500px;
+            background: rgba(99, 102, 241, 0.08);
+            border-radius: 50%;
+            filter: blur(120px);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .bg-glow-2 {
+            position: fixed;
+            bottom: -100px;
+            left: -100px;
+            width: 350px;
+            height: 350px;
+            background: rgba(168, 85, 247, 0.05);
+            border-radius: 50%;
+            filter: blur(100px);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Nav */
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 48px;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-icon {
+            background: linear-gradient(135deg, #6366f1, #a855f7);
+            padding: 10px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.25);
+        }
+
+        .nav-icon svg {
+            width: 22px;
+            height: 22px;
+            stroke: white;
+            fill: none;
+            stroke-width: 2;
+        }
+
+        .nav-title {
+            font-size: 22px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fff, #9ca3af);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.04);
+            color: #e5e7eb;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .btn:active {
+            transform: scale(0.97);
+        }
+
+        /* Grid */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 24px;
+            margin-bottom: 48px;
+        }
+
+        @media (max-width: 992px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Glass Card */
+        .card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 24px;
+            padding: 32px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .card:hover {
+            border-color: rgba(99, 102, 241, 0.3);
+        }
+
+        .card-accent {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #6366f1, #a855f7);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .card:hover .card-accent {
+            opacity: 1;
+        }
+
+        /* Upload Area */
+        .upload-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .upload-icon-wrap {
+            padding: 20px;
+            background: rgba(99, 102, 241, 0.08);
+            border-radius: 20px;
+            margin-bottom: 24px;
+            transition: transform 0.4s;
+        }
+
+        .card:hover .upload-icon-wrap {
+            transform: scale(1.1);
+        }
+
+        .upload-icon-wrap svg {
+            width: 36px;
+            height: 36px;
+            stroke: #818cf8;
+            fill: none;
+            stroke-width: 1.5;
+        }
+
+        .upload-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .upload-desc {
+            font-size: 13px;
+            color: #6b7280;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .upload-input {
+            display: none;
+        }
+
+        .upload-btn {
+            width: 100%;
+            padding: 14px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #6366f1, #a855f7);
+            color: white;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.2);
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .upload-btn:hover {
+            box-shadow: 0 8px 28px rgba(99, 102, 241, 0.35);
+        }
+
+        /* Message */
+        .msg {
+            margin-top: 16px;
+            padding: 12px 16px;
+            border-radius: 14px;
+            font-size: 12px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+        }
+
+        .msg-success {
+            background: rgba(16, 185, 129, 0.08);
+            color: #34d399;
+            border: 1px solid rgba(16, 185, 129, 0.15);
+        }
+
+        .msg-error {
+            background: rgba(239, 68, 68, 0.08);
+            color: #f87171;
+            border: 1px solid rgba(239, 68, 68, 0.15);
+        }
+
+        .msg-info {
+            background: rgba(59, 130, 246, 0.08);
+            color: #60a5fa;
+            border: 1px solid rgba(59, 130, 246, 0.15);
+        }
+
+        /* Stats Grid */
+        .stats-card {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .stats-label {
+            font-size: 10px;
+            color: #818cf8;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+
+        .stats-heading {
+            font-size: 34px;
+            font-weight: 900;
+            line-height: 1.2;
+            margin-bottom: 8px;
+        }
+
+        .stats-heading span {
+            color: #4b5563;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-top: 32px;
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .stat-box {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 16px;
+            border-radius: 16px;
+        }
+
+        .stat-box svg {
+            width: 14px;
+            height: 14px;
+            stroke: #818cf8;
+            fill: none;
+            stroke-width: 2;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 10px;
+            color: #6b7280;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .stat-value {
+            font-size: 16px;
+            font-weight: 800;
+        }
+
+        /* Portfolios Grid */
+        .section-title {
+            font-size: 22px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+            margin-top: 48px;
+        }
+
+        .section-title svg {
+            width: 22px;
+            height: 22px;
+            stroke: #818cf8;
+            fill: none;
+            stroke-width: 2;
+        }
+
+        .portfolios-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 32px;
+            padding-bottom: 80px;
+        }
+
+        /* Portfolio Card Table */
+        .portfolio-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 24px;
+        }
+
+        .portfolio-date {
+            font-size: 10px;
+            color: #818cf8;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 4px;
+        }
+
+        .portfolio-name {
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        .portfolio-total-label {
+            font-size: 10px;
+            color: #6b7280;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 2px;
+        }
+
+        .portfolio-total {
+            font-size: 24px;
+            font-weight: 900;
+            color: #34d399;
+        }
+
+        .table-wrap {
+            overflow-x: auto;
+            margin-top: 16px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 800px;
+        }
+
+        th {
+            text-align: left;
+            font-size: 10px;
+            font-weight: 800;
+            color: #4b5563;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 12px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        td {
+            padding: 16px;
+            font-size: 14px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .asset-main {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .ticker-badge {
+            padding: 6px 10px;
+            background: rgba(99, 102, 241, 0.1);
+            border-radius: 8px;
+            font-weight: 800;
+            font-size: 11px;
+            color: #818cf8;
+        }
+
+        .comp-name {
+            font-weight: 700;
+            font-size: 13px;
+            color: #f3f4f6;
+        }
+
+        .metric-val {
+            font-weight: 800;
+            font-family: monospace;
+            font-size: 15px;
+        }
+
+        .suggestion-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 800;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .suggest-buy {
+            background: rgba(16, 185, 129, 0.1);
+            color: #34d399;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .suggest-hold {
+            background: rgba(245, 158, 11, 0.1);
+            color: #fbbf24;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+        }
+
+        .suggest-avoid {
+            background: rgba(239, 68, 68, 0.1);
+            color: #f87171;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        /* Utils */
+        .spinner {
+            display: flex;
+            justify-content: center;
+            padding: 80px 0;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .spin {
+            animation: spin 1s linear infinite;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 48px 0;
+            color: #374151;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+            margin-top: 40px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-glow-1"></div>
+    <div class="bg-glow-2"></div>
+    <div class="container" id="app"></div>
+
+    <script>
+        const API = 'https://portfoliofunction9914.azurewebsites.net/api';
+        let portfolios = [];
+        let loading = false;
+        let uploading = false;
+        let message = null;
+
+        function svg(name) {
+            const icons = {
+                'trending-up': '<polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline>',
+                'refresh': '<polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>',
+                'upload': '<polyline points="16 16 12 12 8 16"></polyline><line x1="12" y1="12" x2="12" y2="21"></line><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"></path>',
+                'check': '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>',
+                'alert': '<circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line>',
+                'grid': '<rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect>',
+                'inbox': '<polyline points="22 12 16 12 14 15 10 15 8 12 2 12"></polyline><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path>',
+                'file': '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line>',
+                'zap': '<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>',
+                'shield': '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>',
+                'globe': '<circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>',
+                'star': '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>'
+            };
+            return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${icons[name] || ''}</svg>`;
+        }
+
+        async function fetchPortfolios() {
+            loading = true;
+            render();
+            try {
+                const res = await fetch(API + '/get_portfolios');
+                const data = await res.json();
+                portfolios = Array.isArray(data) ? data : [];
+            } catch (e) {
+                console.error(e);
+                message = { type: 'error', text: 'Cloud connection error.' };
+            }
+            loading = false;
+            render();
+        }
+
+        async function handleUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            uploading = true;
+            message = { type: 'info', text: 'Analysing portfolio and calculating metrics...' };
+            render();
+            try {
+                const buf = await file.arrayBuffer();
+                const res = await fetch(API + '/upload', {
+                    method: 'POST',
+                    body: buf,
+                    headers: { 'Content-Type': 'application/octet-stream' }
+                });
+                if (res.ok) {
+                    message = { type: 'success', text: 'Analysis complete with financial metrics!' };
+                    await fetchPortfolios();
+                } else {
+                    message = { type: 'error', text: 'Analysis failed.' };
+                }
+            } catch (e) {
+                message = { type: 'error', text: 'Upload error.' };
+            }
+            uploading = false;
+            render();
+        }
+
+        function getSuggestClass(s) {
+            if (!s) return '';
+            if (s.toLowerCase().includes('buy')) return 'suggest-buy';
+            if (s.toLowerCase().includes('avoid')) return 'suggest-avoid';
+            return 'suggest-hold';
+        }
+
+        function render() {
+            const app = document.getElementById('app');
+            app.innerHTML = `
+                <nav class="nav">
+                    <div class="nav-brand">
+                        <div class="nav-icon">${svg('trending-up')}</div>
+                        <div class="nav-title">InvestVision AI</div>
+                    </div>
+                    <button class="btn" onclick="fetchPortfolios()">
+                        ${svg('refresh')} Refresh
+                    </button>
+                </nav>
+
+                <div class="grid-2">
+                    <div class="card upload-area">
+                        <div class="card-accent"></div>
+                        <div class="upload-icon-wrap">${svg('upload')}</div>
+                        <div class="upload-title">Analytic Scan</div>
+                        <div class="upload-desc">Upload a screenshot. AI will extract holdings, calculate P/E & P/B ratios, and provide investment advice.</div>
+                        <input type="file" class="upload-input" id="file" onchange="handleUpload(event)">
+                        <label for="file" class="upload-btn">${uploading ? '⌛ Processing...' : '📷 Upload Screenshot'}</label>
+                        ${message ? `<div class="msg msg-${message.type}">${svg(message.type === 'success' ? 'check' : 'alert')} ${message.text}</div>` : ''}
+                    </div>
+
+                    <div class="card stats-card">
+                        <div>
+                            <div class="stats-label">📊 Financial Intelligence Layer</div>
+                            <div class="stats-heading">Portfolio Analysis<br><span>with Smart Metrics.</span></div>
+                        </div>
+                        <div class="stats-grid">
+                            <div class="stat-box">
+                                ${svg('file')}
+                                <div class="stat-label">Analysed</div>
+                                <div class="stat-value">${portfolios.length}</div>
+                            </div>
+                            <div class="stat-box">
+                                ${svg('star')}
+                                <div class="stat-label">Advice</div>
+                                <div class="stat-value">Active</div>
+                            </div>
+                            <div class="stat-box">
+                                ${svg('shield')}
+                                <div class="stat-label">Security</div>
+                                <div class="stat-value">AES-256</div>
+                            </div>
+                            <div class="stat-box">
+                                ${svg('globe')}
+                                <div class="stat-label">Nodes</div>
+                                <div class="stat-value">Azure</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-title">${svg('grid')} Analysis History</div>
+
+                ${loading ? `<div class="spinner"><div class="spin">${svg('refresh')}</div></div>` : ''}
+
+                <div class="portfolios-grid">
+                    ${!loading && portfolios.length === 0 ? '<div class="empty"><p>No analysis records found.</p></div>' : ''}
+                    ${portfolios.map(p => `
+                        <div class="card">
+                            <div class="card-accent"></div>
+                            <div class="portfolio-header">
+                                <div>
+                                    <div class="portfolio-date">${new Date(p.processed_at).toLocaleString()}</div>
+                                    <div class="portfolio-name">${p.filename || 'Web Upload'}</div>
+                                </div>
+                                <div style="text-align:right">
+                                    <div class="portfolio-total-label">Total Asset Value</div>
+                                    <div class="portfolio-total">$${p.assets.reduce((s, a) => s + (a.total_value || 0), 0).toLocaleString()}</div>
+                                </div>
+                            </div>
+
+                            <div class="table-wrap">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Asset / Holding</th>
+                                            <th>Quantity</th>
+                                            <th>Price</th>
+                                            <th>P/E Ratio</th>
+                                            <th>P/B Ratio</th>
+                                            <th>AI Suggestion</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${p.assets.map(a => `
+                                            <tr>
+                                                <td>
+                                                    <div class="asset-main">
+                                                        <div class="ticker-badge">${a.ticker}</div>
+                                                        <div class="comp-name">${a.company_name || a.ticker}</div>
+                                                    </div>
+                                                </td>
+                                                <td><div class="metric-val">${a.quantity}</div></td>
+                                                <td><div class="metric-val">$${a.price}</div></td>
+                                                <td><div class="metric-val" style="color:#818cf8">${a.pe_ratio || '--'}</div></td>
+                                                <td><div class="metric-val" style="color:#a78bfa">${a.pb_ratio || '--'}</div></td>
+                                                <td>
+                                                    <div class="suggestion-badge ${getSuggestClass(a.suggestion)}">
+                                                        ${a.suggestion || 'No recommendation'}
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        `).join('')}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+
+                <div class="footer">Cloud Investment Analyzer &copy; 2026 — Powered by Azure Serverless</div>
+            `;
+        }
+
+        render();
+        fetchPortfolios();
+    </script>
+</body>
+
+</html>
