@@ -1,0 +1,5 @@
+azure-functions
+azure-ai-vision-imageanalysis
+azure-cosmos
+azure-core
+azure-identity
