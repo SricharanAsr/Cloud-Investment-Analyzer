@@ -1,0 +1,31 @@
+# Azure Secrets
+local.settings.json
+*.tfstate
+*.tfstate.backup
+.azure/
+.funcignore
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+.env
+
+# Binary/Build
+*.zip
+*.exe
+*.dll
+*.so
+dist/
+build/
+node_modules/
+.vscode/
+
+# Project Specific
+sample_portfolio.png
+test_portfolios/
+Project_Report.pdf
+Project_Report.html
+Project_Report.md
