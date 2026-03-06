@@ -3,6 +3,32 @@
 ## 1. Project Overview
 The **AI-Powered Investment Portfolio Analyzer** is a 100% cloud-native, serverless application designed to digitize and analyze investment portfolio screenshots. Using state-of-the-art Azure AI services, it transforms unstructured images into actionable financial intelligence, including valuation metrics and investment suggestions.
 
+## 2. System Architecture
+The system follows a modern microservices-inspired serverless architecture, ensuring high availability, scalability, and cost-efficiency.
+
+```mermaid
+graph TD
+    User((User)) -->|Uploads Screenshot| Frontend[Frontend: Azure Storage Static Site]
+    Frontend -->|POST Image Data| API[API: Azure Functions]
+    
+    subgraph "Azure Cloud Infrastructure"
+        API -->|OCR Request| Vision[Azure AI Vision]
+        Vision -->|Extracted Text| API
+        
+        API -->|Secure Key Fetch| KV[Azure Key Vault]
+        
+        API -->|Store Data| Cosmos[Azure Cosmos DB]
+        
+        API -->|Logs & Metrics| AppInsights[Application Insights]
+        AppInsights -->|Store Logs| LogAnalytics[Log Analytics Workspace]
+        
+        API --- Plan[App Service Plan: Consumption]
+    end
+    
+    API -->|Response| Frontend
+    Frontend -->|View Analysis| User
+```
+
 ---
 
 ## 2. Core Features
@@ -30,13 +56,16 @@ The **AI-Powered Investment Portfolio Analyzer** is a 100% cloud-native, serverl
 
 ## 3. Technology Stack (Azure Cloud)
 
-| Service | Role in Project |
-| :--- | :--- |
-| **Azure AI Vision** | The "Brain" - Performs high-precision OCR to read screenshots. |
-| **Azure Functions** | The "Engine" - Serverless Python backend that processes data and runs analysis. |
-| **Azure Cosmos DB** | The "Memory" - NoSQL database storing every analysis record permanently. |
-| **Azure Storage** | The "Host" - Stores raw images and hosts the static website dashboard. |
-| **Azure Key Vault** | The "Vault" - Securely manages API keys and connection strings. |
+| Service | Role in Project | Detailed Explanation |
+| :--- | :--- | :--- |
+| **Azure AI Vision** | The "Brain" | Performs high-precision OCR to read screenshots. Identifies symbols, quantities, and prices. |
+| **Azure Functions** | The "Engine" | Serverless Python backend that processes data, runs financial logic, and integrates with the database. |
+| **Azure Cosmos DB** | The "Memory" | NoSQL database storing every analysis record permanently with global scale. |
+| **Azure Storage** | The "Host" | Stores raw images in blob containers and hosts the static website dashboard. |
+| **Azure Key Vault** | The "Vault" | Securely manages API keys and connection strings, ensuring infrastructure security. |
+| **Application Insights** | The "Monitor" | Full-stack observability tracking performance, failures, and execution telemetry. |
+| **Log Analytics** | The "Analyst" | Aggregates logs from all cloud services for centralized auditing and debugging. |
+| **App Service Plan** | The "Compute" | Consumption-based plan that provides dynamic scaling and zero-idle-cost execution. |
 
 ---
 

@@ -146,7 +146,8 @@
         <span class="badge">Feature 02</span> <strong>Automated Financial Metrics (P/E & P/B)</strong>
         <p>The system automatically calculates/assigns <strong>Price-to-Earnings (P/E)</strong> and
             <strong>Price-to-Book (P/B)</strong> ratios for every holding. This allows users to quantify the value of
-            their portfolio beyond just share price.</p>
+            their portfolio beyond just share price.
+        </p>
     </div>
 
     <div class="feature-box">
@@ -161,7 +162,28 @@
                 Website</strong>. It provides drag-and-drop uploads and a historical view of all previous analyses.</p>
     </div>
 
-    <h2>3. Technological Infrastructure</h2>
+    <h2>3. Cloud Infrastructure Architecture</h2>
+    <p>The solution is built on a distributed cloud architecture. The flow starts from the <strong>Azure
+            Storage</strong> hosted frontend, triggers an <strong>Azure Function</strong>, which orchestrates the
+        <strong>AI Vision</strong> OCR and persists analyzed data in <strong>Cosmos DB</strong>. All security is managed
+        via <strong>Azure Key Vault</strong> and monitoring through <strong>Application Insights</strong>.</p>
+
+    <div
+        style="background: #f8fafc; border: 2px dashed #cbd5e1; padding: 20px; border-radius: 12px; margin-bottom: 32px; text-align: center;">
+        <p style="font-weight: 800; color: #6366f1; margin: 0;">ARCHITECTURE VISUALIZATION</p>
+        <p style="font-size: 13px; color: #64748b; margin-top: 5px;">[ Dashboard ] ➔ [ Functions API ] ➔ [ AI Vision ] ➔
+            [ Cosmos DB Storage ]</p>
+        <div
+            style="border-top: 1px solid #e2e8f0; margin-top: 15px; padding-top: 15px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; text-align: left;">
+            <div style="font-size: 12px; color: #4b5563;"><strong>Security:</strong> Azure Key Vault (AES-256)</div>
+            <div style="font-size: 12px; color: #4b5563;"><strong>Compute:</strong> Serverless Consumption Plan</div>
+            <div style="font-size: 12px; color: #4b5563;"><strong>Database:</strong> NoSQL Global Scale</div>
+            <div style="font-size: 12px; color: #4b5563;"><strong>Monitoring:</strong> Application Insights + Log
+                Analytics</div>
+        </div>
+    </div>
+
+    <h2>4. Full Technical Stack Breakdown</h2>
     <table>
         <thead>
             <tr>
@@ -172,28 +194,48 @@
         <tbody>
             <tr>
                 <td><strong>Azure AI Vision</strong></td>
-                <td>OCR engine used to identify and read text from complex portfolio images.</td>
+                <td>OCR engine used to identify and read text from complex portfolio images. Specifically used the
+                    'Read' feature for mixed text extraction.</td>
             </tr>
             <tr>
                 <td><strong>Azure Functions</strong></td>
-                <td>Serverless Python backend managing API requests, financial logic, and database integration.</td>
+                <td>Serverless Python backend managing API requests, financial logic, and database integration.
+                    Functions as a REST API for the frontend.</td>
             </tr>
             <tr>
                 <td><strong>Azure Cosmos DB</strong></td>
-                <td>NoSQL database used for permanent storage of analyzed portfolio records.</td>
+                <td>NoSQL database used for permanent storage of analyzed portfolio records. Configured with a
+                    partition-key based on UserID for high-speed retrieval.</td>
             </tr>
             <tr>
                 <td><strong>Azure Storage</strong></td>
-                <td>Stores raw images in blob containers and hosts the front-end static website.</td>
+                <td>Hosts the front-end static website and provides Blob Storage for raw image logs and background
+                    trigger scenarios.</td>
             </tr>
             <tr>
                 <td><strong>Azure Key Vault</strong></td>
-                <td>Manages security certificates and environmental secrets for cloud resources.</td>
+                <td>Secures sensitive credentials (DB keys, AI keys) from code exposure. Implements vault-based secret
+                    injection.</td>
+            </tr>
+            <tr>
+                <td><strong>Application Insights</strong></td>
+                <td>Real-time monitoring of function performance, failure rates, and live telemetry to ensure 24/7
+                    reliability.</td>
+            </tr>
+            <tr>
+                <td><strong>Log Analytics</strong></td>
+                <td>Aggregates logs from across all services into a single searchable workspace for detailed technical
+                    auditing.</td>
+            </tr>
+            <tr>
+                <td><strong>App Service Plan</strong></td>
+                <td>The underlying Linux-based Consumption plan that powers the serverless scaling and handles peak
+                    traffic automatically.</td>
             </tr>
         </tbody>
     </table>
 
-    <h2>4. System Architecture & Workflow</h2>
+    <h2>5. System Architecture & Workflow</h2>
     <ul>
         <li><strong>Step 1: Upload</strong> — The user uploads a screenshot via the browser dashboard.</li>
         <li><strong>Step 2: API Trigger</strong> — The image is sent to an <strong>Azure Function HTTP
@@ -202,12 +244,13 @@
             text blocks.</li>
         <li><strong>Step 4: Smart Parsing</strong> — Python regex logic isolates stock data from raw text.</li>
         <li><strong>Step 5: Valuation & Storage</strong> — Financial ratios are assigned, and data is saved to
-            <strong>Cosmos DB</strong>.</li>
+            <strong>Cosmos DB</strong>.
+        </li>
         <li><strong>Step 6: UI Update</strong> — Dashboard refreshes via <strong>AJAX</strong> to show results with
             suggestions.</li>
     </ul>
 
-    <h2>5. Project Deliverables Completion</h2>
+    <h2>6. Project Deliverables Completion</h2>
     <ul>
         <li>✅ Cloud Architecture deployed (Resource Groups, Storage, DB, AI).</li>
         <li>✅ Serverless Backend live with OCR and Financial Logic.</li>
