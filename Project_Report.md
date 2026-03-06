@@ -1,7 +1,11 @@
 # Project Report: AI-Powered Investment Portfolio Analyzer
 
+---
+
 ## 1. Project Overview
-The **AI-Powered Investment Portfolio Analyzer** is a 100% cloud-native, serverless application designed to digitize and analyze investment portfolio screenshots. Using state-of-the-art Azure AI services, it transforms unstructured images into actionable financial intelligence, including valuation metrics and investment suggestions.
+The **AI-Powered Investment Portfolio Analyzer** is a **100% cloud-native**, serverless application designed to digitize and analyze investment portfolio screenshots. Using state-of-the-art **Azure AI services**, it transforms unstructured images into actionable financial intelligence, including valuation metrics and investment suggestions.
+
+---
 
 ## 2. System Architecture
 The system follows a modern microservices-inspired serverless architecture, ensuring high availability, scalability, and cost-efficiency.
@@ -31,7 +35,7 @@ graph TD
 
 ---
 
-## 2. Core Features
+## 3. Core Features
 
 ### 🟢 AI-Driven OCR (Optical Character Recognition)
 *   **Feature**: Automated text extraction from images.
@@ -50,11 +54,11 @@ graph TD
 
 ### ☁️ 100% Cloud-Native Dashboard
 *   **Feature**: High-end serverless web interface.
-*   **Usage**: Rebuilt as a glassmorphism-themed dashboard using Vanilla JS/CSS and hosted on **Azure Storage Static Websites**. It allows users to upload images and view history from any browser globally.
+*   **Usage**: Rebuilt as a **glassmorphism-themed dashboard** using Vanilla JS/CSS and hosted on **Azure Storage Static Websites**. It allows users to upload images and view history from any browser globally.
 
 ---
 
-## 3. Technology Stack (Azure Cloud)
+## 4. Technology Stack (Azure Cloud)
 
 | Service | Role in Project | Detailed Explanation |
 | :--- | :--- | :--- |
@@ -69,19 +73,19 @@ graph TD
 
 ---
 
-## 4. System Workflow (Step-by-Step)
+## 5. System Workflow (Step-by-Step)
 
 1.  **Input**: User uploads a screenshot via the Cloud Dashboard.
 2.  **Transmission**: The image is sent securely via a `POST` request to an **Azure Function API**.
 3.  **OCR Processing**: The Function calls **Azure AI Vision** to extract raw text content.
 4.  **Analysis**:
-    *   Regex logic filters for stock symbols (e.g., AAPL, NVDA).
-    *   Quantity and Price are extracted.
+    *   **Regex logic** filters for stock symbols (e.g., AAPL, NVDA).
+    *   **Quantity and Price** are extracted.
     *   The **Financial Engine** applies P/E and P/B ratios.
 5.  **Storage**: The final structured JSON is saved into **Cosmos DB**.
 6.  **Display**: The Dashboard refreshes to show the new analysis cards with color-coded suggestions.
 
 ---
 
-## 5. Summary of Innovation
+## 6. Summary of Innovation
 This project demonstrates a complete **Serverless Pipeline**. It solves the problem of "manual portfolio tracking" by using AI to bridge the gap between an image and a database. By hosting everything on Azure, it ensures massive scalability and zero maintenance for the end user.
