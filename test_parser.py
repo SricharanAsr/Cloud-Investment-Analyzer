@@ -26,11 +26,27 @@ def mock_parse_text(text):
                         price_val = val
                         break
             if qty_val is not None and price_val is not None:
+                # Deterministic ratios based on ticker
+                ticker_hash = sum(ord(c) for c in ticker) % 100
+                pe = 15.0 + (ticker_hash % 20)
+                
+                # Mock advanced metrics
+                beta = 0.7 + (ticker_hash / 100.0)
+                sharpe = 1.0 + (ticker_hash % 10) / 10.0
+                
                 assets.append({
                     "ticker": ticker,
                     "quantity": qty_val,
                     "price": price_val,
-                    "total_value": qty_val * price_val
+                    "total_value": qty_val * price_val,
+                    "company_name": f"{ticker} Corp",
+                    "pe_ratio": round(pe, 2),
+                    "suggestion": "Healthy Buy" if pe < 30 else "Hold",
+                    "advanced_metrics": {
+                        "sharpe_ratio": round(sharpe, 2),
+                        "beta": round(beta, 2),
+                        "alpha": round((ticker_hash % 5), 2)
+                    }
                 })
     return assets
 

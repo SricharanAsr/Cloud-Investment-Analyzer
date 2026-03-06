@@ -23,8 +23,7 @@ def get_financial_metrics(ticker):
         "NVDA": {"pe": 65.2, "pb": 32.1, "name": "NVIDIA Corp."}
     }
     
-    # Improved fallback: if ticker is not in mock data, use a stable hash-based random to avoid purely random values
-    # deterministic random based on ticker string
+    # Improved fallback: if ticker is not in mock data, use a stable hash-based random
     ticker_hash = sum(ord(c) for c in ticker) % 100
     default_pe = 15.0 + (ticker_hash % 20)
     default_pb = 1.5 + (ticker_hash % 6) / 2.0
@@ -38,11 +37,33 @@ def get_financial_metrics(ticker):
     elif pe < 50: suggestion = "Hold (Fair Value)"
     else: suggestion = "Avoid (Overvalued)"
     
+    # Advanced Intelligence Metrics (Mocked based on ticker stability)
+    benchmark_return = 0.10 # 10% market return
+    risk_free_rate = 0.03 # 3% risk-free rate
+    
+    # Deterministic simulation of ratios
+    beta = 0.7 + (ticker_hash / 100.0) # 0.7 to 1.7
+    std_dev = 0.1 + (ticker_hash / 500.0) # 0.1 to 0.3
+    mock_return = benchmark_return * (beta + (ticker_hash % 5) / 100.0)
+    
+    sharpe = (mock_return - risk_free_rate) / std_dev
+    treynor = (mock_return - risk_free_rate) / beta
+    sortino = sharpe * 1.2 # Simulating Sortino as slightly higher than Sharpe
+    alpha = mock_return - (risk_free_rate + beta * (benchmark_return - risk_free_rate))
+
     return {
-        "pe_ratio": pe,
-        "pb_ratio": data.get("pb_ratio") or data.get("pb") or default_pb,
+        "pe_ratio": round(pe, 2),
+        "pb_ratio": round(data.get("pb_ratio") or data.get("pb") or default_pb, 2),
         "suggestion": suggestion,
-        "company_name": data.get("name", ticker)
+        "company_name": data.get("name", ticker),
+        "advanced_metrics": {
+            "sharpe_ratio": round(sharpe, 2),
+            "treynor_ratio": round(treynor, 3),
+            "sortino_ratio": round(sortino, 2),
+            "alpha": round(alpha * 100, 2), # In percentage
+            "beta": round(beta, 2),
+            "std_dev": round(std_dev * 100, 2) # In percentage
+        }
     }
 
 # --- 2. Helper Function for OCR and Save ---
