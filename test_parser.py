@@ -1,25 +1,23 @@
-import json
-import re
-import os
+from typing import List, Dict, Any, Optional
 
-def mock_parse_text(text):
+def mock_parse_text(text: str) -> List[Dict[str, Any]]:
     """
     Simulates the improved parsing logic used in the Azure Function.
     """
-    lines = [l.strip() for l in text.split('\n') if l.strip()]
-    assets = []
+    lines: List[str] = [l.strip() for l in text.split('\n') if l.strip()]
+    assets: List[Dict[str, Any]] = []
     
     for i, line in enumerate(lines):
         # Must start with a letter, 2-7 chars
         if re.match(r'^[A-Z][A-Z0-9\.]{1,6}$', line):
-            ticker = line
-            qty_val = None
-            price_val = None
+            ticker: str = line
+            qty_val: Optional[float] = None
+            price_val: Optional[float] = None
             for j in range(i+1, min(i+6, len(lines))):
-                next_line = lines[j]
+                next_line: str = lines[j]
                 num_match = re.search(r'[\d,]+\.?\d*', next_line)
                 if num_match:
-                    val = float(num_match.group(0).replace(',', ''))
+                    val: float = float(num_match.group(0).replace(',', ''))
                     if qty_val is None:
                         qty_val = val
                     elif price_val is None:
@@ -27,12 +25,12 @@ def mock_parse_text(text):
                         break
             if qty_val is not None and price_val is not None:
                 # Deterministic ratios based on ticker
-                ticker_hash = sum(ord(c) for c in ticker) % 100
-                pe = 15.0 + (ticker_hash % 20)
+                ticker_hash: int = sum(ord(c) for c in ticker) % 100
+                pe: float = 15.0 + (ticker_hash % 20)
                 
                 # Mock advanced metrics
-                beta = 0.7 + (ticker_hash / 100.0)
-                sharpe = 1.0 + (ticker_hash % 10) / 10.0
+                beta: float = 0.7 + (ticker_hash / 100.0)
+                sharpe: float = 1.0 + (ticker_hash % 10) / 10.0
                 
                 assets.append({
                     "ticker": ticker,
