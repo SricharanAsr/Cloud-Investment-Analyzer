@@ -60,4 +60,5 @@ Contributions are welcome! Please read our [CONTRIBUTING.md](CONTRIBUTING.md) fo
 This project is for educational and professional demonstration purposes. It is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
-© 2026 InvestVision AI | Powered by Azure Cloud
+---
+© 2026 InvestVision AI | Powered by Azure AI & Cloud
