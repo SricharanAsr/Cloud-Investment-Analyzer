@@ -8,6 +8,16 @@ import {
 
 const API_BASE_URL = 'https://portfoliofunction9914.azurewebsites.net/api';
 
+/**
+ * Utility: Standardizes currency formatting across the dashboard
+ */
+const formatCurrency = (value) => {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+  }).format(value);
+};
+
 function App() {
   const [portfolios, setPortfolios] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -19,6 +29,9 @@ function App() {
     fetchPortfolios();
   }, []);
 
+  /**
+   * Fetches all processed portfolios from the Azure Function API
+   */
   const fetchPortfolios = async () => {
     setLoading(true);
     try {
@@ -31,6 +44,9 @@ function App() {
     setLoading(false);
   };
 
+  /**
+   * Handles image upload, converts to binary, and sends to the analysis engine
+   */
   const handleFileUpload = async (event) => {
     const file = event.target.files[0];
     if (!file) return;
@@ -57,6 +73,8 @@ function App() {
     }
     setUploading(false);
   };
+
+  // ... rest of the component (KnowledgeHub, return JSX) ...
 
   const KnowledgeHub = () => (
     <div className="space-y-12 pb-20 animate-in fade-in slide-in-from-bottom-4 duration-700">
@@ -225,8 +243,8 @@ function App() {
 
         {message && (
           <div className={`mb-10 flex items-center justify-between p-4 rounded-2xl border ${message.type === 'success' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' :
-              message.type === 'error' ? 'bg-rose-500/10 text-rose-400 border-rose-500/20' :
-                'bg-indigo-500/10 text-indigo-400 border-indigo-500/20'
+            message.type === 'error' ? 'bg-rose-500/10 text-rose-400 border-rose-500/20' :
+              'bg-indigo-500/10 text-indigo-400 border-indigo-500/20'
             }`}>
             <div className="flex items-center gap-3">
               {message.type === 'success' ? <CheckCircle size={20} /> : message.type === 'error' ? <AlertCircle size={20} /> : <Info size={20} />}
@@ -357,8 +375,8 @@ function App() {
                                 </td>
                                 <td className="py-6 text-right">
                                   <span className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider border ${a.suggestion.includes('Buy') ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' :
-                                      a.suggestion.includes('Avoid') ? 'bg-rose-500/10 text-rose-400 border-rose-500/20' :
-                                        'bg-amber-500/10 text-amber-500 border-amber-500/20'
+                                    a.suggestion.includes('Avoid') ? 'bg-rose-500/10 text-rose-400 border-rose-500/20' :
+                                      'bg-amber-500/10 text-amber-500 border-amber-500/20'
                                     }`}>
                                     {a.suggestion || 'Neutral'}
                                   </span>
