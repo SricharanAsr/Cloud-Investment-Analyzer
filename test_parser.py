@@ -4,39 +4,54 @@ import os
 
 def mock_parse_text(text):
     """
-    Simulates the parsing logic used in the Azure Function.
-    This helps verify regex patterns without needing a live Azure connection.
+    Simulates the improved parsing logic used in the Azure Function.
     """
+    lines = [l.strip() for l in text.split('\n') if l.strip()]
     assets = []
-    # Pattern: StockName Quantity Price
-    # Example: APPLE 10 150.25
-    matches = re.findall(r'([A-Z][A-Za-z0-9]+)\s+(\d+)\s+([\d\.]+)', text)
     
-    for name, qty, price in matches:
-        assets.append({
-            "ticker": name,
-            "quantity": int(qty),
-            "price": float(price),
-            "total_value": int(qty) * float(price)
-        })
+    for i, line in enumerate(lines):
+        # Must start with a letter, 2-7 chars
+        if re.match(r'^[A-Z][A-Z0-9\.]{1,6}$', line):
+            ticker = line
+            qty_val = None
+            price_val = None
+            for j in range(i+1, min(i+6, len(lines))):
+                next_line = lines[j]
+                num_match = re.search(r'[\d,]+\.?\d*', next_line)
+                if num_match:
+                    val = float(num_match.group(0).replace(',', ''))
+                    if qty_val is None:
+                        qty_val = val
+                    elif price_val is None:
+                        price_val = val
+                        break
+            if qty_val is not None and price_val is not None:
+                assets.append({
+                    "ticker": ticker,
+                    "quantity": qty_val,
+                    "price": price_val,
+                    "total_value": qty_val * price_val
+                })
     return assets
 
 if __name__ == "__main__":
-    # Sample OCR output text for testing
-    sample_ocr_text = """
-    PORTFOLIO OVERVIEW
-    APPLE 50 175.50
-    MICROSOFT 10 420.00
-    TESLA 5 200.10
-    BITCOIN 1 65000.00
-    Total Value: 95000.00
-    """
+    test_cases = [
+        {
+            "name": "Standard Portfolio",
+            "text": "AAPL\n50\n175.50\nMSFT\n10\n420.00"
+        },
+        {
+            "name": "Crypto & Decimals",
+            "text": "BTC\n0.125\n65,000.00\nETH\n2.5\n3,400.50"
+        },
+        {
+            "name": "Alphanumeric Tickers",
+            "text": "BRK.B\n5\n400.20\n1234.HK\n1000\n55.50"
+        }
+    ]
     
-    print("--- Running Mock Extraction Test ---")
-    results = mock_parse_text(sample_ocr_text)
-    
-    if results:
-        print(f"Extracted {len(results)} assets:")
+    for case in test_cases:
+        print(f"--- Running Test: {case['name']} ---")
+        results = mock_parse_text(case['text'])
         print(json.dumps(results, indent=4))
-    else:
-        print("No assets found. Check regex patterns.")
+        print()

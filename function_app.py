@@ -23,7 +23,13 @@ def get_financial_metrics(ticker):
         "NVDA": {"pe": 65.2, "pb": 32.1, "name": "NVIDIA Corp."}
     }
     
-    data = market_data.get(ticker, {"pe": 15.0 + (os.urandom(1)[0] % 20), "pb": 2.0 + (os.urandom(1)[0] % 5), "name": ticker})
+    # Improved fallback: if ticker is not in mock data, use a stable hash-based random to avoid purely random values
+    # deterministic random based on ticker string
+    ticker_hash = sum(ord(c) for c in ticker) % 100
+    default_pe = 15.0 + (ticker_hash % 20)
+    default_pb = 1.5 + (ticker_hash % 6) / 2.0
+    
+    data = market_data.get(ticker.upper(), {"pe": default_pe, "pb": default_pb, "name": ticker})
     
     pe = data["pe"]
     suggestion = "Neutral"
@@ -34,9 +40,9 @@ def get_financial_metrics(ticker):
     
     return {
         "pe_ratio": pe,
-        "pb_ratio": data["pb_ratio"] if "pb_ratio" in data else data.get("pb", 3.0),
+        "pb_ratio": data.get("pb_ratio") or data.get("pb") or default_pb,
         "suggestion": suggestion,
-        "company_name": data["name"]
+        "company_name": data.get("name", ticker)
     }
 
 # --- 2. Helper Function for OCR and Save ---
@@ -71,20 +77,25 @@ def analyze_and_save(image_data, filename):
     # Strategy 1: Line-by-line OCR
     lines = [l.strip() for l in extracted_text.split('\n') if l.strip()]
     for i, line in enumerate(lines):
-        if re.match(r'^[A-Z]{2,5}$', line):
+        # Improved Regex: Allow 2-7 chars, alphanumeric and dots, must start with letter
+        if re.match(r'^[A-Z][A-Z0-9\.]{1,6}$', line):
             ticker = line
             qty_val = None
             price_val = None
-            for j in range(i+1, min(i+4, len(lines))):
+            # Search for numbers in the lines immediately following the ticker
+            for j in range(i+1, min(i+6, len(lines))): 
                 next_line = lines[j]
-                if qty_val is None and re.match(r'^\d[\d,]*$', next_line):
-                    qty_val = int(next_line.replace(',', ''))
-                elif price_val is None:
-                    price_match = re.search(r'\$?([\d,]+\.?\d*)', next_line)
-                    if price_match and qty_val is not None:
-                        price_val = float(price_match.group(1).replace(',', ''))
-                        break
-            if qty_val and price_val:
+                # Look for potential quantity/price (numbers with optional commas and decimals)
+                num_match = re.search(r'[\d,]+\.?\d*', next_line)
+                if num_match:
+                    val = float(num_match.group(0).replace(',', ''))
+                    if qty_val is None:
+                        qty_val = val
+                    elif price_val is None:
+                        price_val = val
+                        break # Found both qty and price
+            
+            if qty_val is not None and price_val is not None:
                 metrics = get_financial_metrics(ticker)
                 portfolio_data["assets"].append({
                     "ticker": ticker,
