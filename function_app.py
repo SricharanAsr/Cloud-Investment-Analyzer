@@ -126,7 +126,8 @@ def analyze_and_save(image_data, filename):
                     "total_value": qty_val * price_val,
                     "pe_ratio": metrics["pe_ratio"],
                     "pb_ratio": metrics["pb_ratio"],
-                    "suggestion": metrics["suggestion"]
+                    "suggestion": metrics["suggestion"],
+                    "advanced_metrics": metrics.get("advanced_metrics", {})
                 })
 
     # Strategy 2: Same-line format fallback
@@ -143,7 +144,8 @@ def analyze_and_save(image_data, filename):
                 "total_value": int(clean_qty) * float(price),
                 "pe_ratio": metrics["pe_ratio"],
                 "pb_ratio": metrics["pb_ratio"],
-                "suggestion": metrics["suggestion"]
+                "suggestion": metrics["suggestion"],
+                "advanced_metrics": metrics.get("advanced_metrics", {})
             })
 
     container.upsert_item(portfolio_data)
