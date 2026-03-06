@@ -48,8 +48,16 @@ If your portfolio isn't being parsed:
 - **Format**: The analyzer looks for a **Ticker Symbol** followed by **Quantity** and **Price** in subsequent lines.
 - **Ticker Style**: Supports standard 2-7 character alphanumeric symbols (e.g., `AAPL`, `BTC`, `BRK.B`).
 
+## 🤝 Contributing
+Contributions are welcome! Please read our [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.
+
+## 🗺️ Future Roadmap
+- [ ] Integration with Alpha Vantage for real-time market data.
+- [ ] Export analysis results to CSV/PDF.
+- [ ] Multi-portfolio comparison dashboard.
+
 ## 📝 License
-This project is for educational and professional demonstration purposes.
+This project is for educational and professional demonstration purposes. It is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 © 2026 InvestVision AI | Powered by Azure Cloud
