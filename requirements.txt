@@ -1,5 +1,5 @@
-azure-functions
-azure-ai-vision-imageanalysis
-azure-cosmos
-azure-core
-azure-identity
+azure-functions==1.17.0
+azure-ai-vision-imageanalysis==1.0.0b1
+azure-cosmos==4.5.1
+azure-core==1.29.5
+azure-identity==1.15.0
