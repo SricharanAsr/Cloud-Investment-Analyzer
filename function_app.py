@@ -13,6 +13,11 @@ app = func.FunctionApp(http_auth_level=func.AuthLevel.ANONYMOUS)
 
 # --- 1. Helper: Financial Analysis Engine ---
 def get_financial_metrics(ticker):
+    """
+    Simulates fetching financial metrics for a given stock ticker.
+    In a production environment, this would integrate with a real-time 
+    financial data API (e.g., Alpha Vantage, Yahoo Finance).
+    """
     # Mock data for demonstration - in production, this would call a Finance API
     market_data = {
         "AAPL": {"pe": 28.5, "pb": 45.2, "name": "Apple Inc."},
@@ -24,6 +29,7 @@ def get_financial_metrics(ticker):
     }
     
     # Improved fallback: if ticker is not in mock data, use a stable hash-based random
+    # This ensures consistent results for the same ticker across different requests
     ticker_hash = sum(ord(c) for c in ticker) % 100
     default_pe = 15.0 + (ticker_hash % 20)
     default_pb = 1.5 + (ticker_hash % 6) / 2.0
@@ -41,7 +47,7 @@ def get_financial_metrics(ticker):
     benchmark_return = 0.10 # 10% market return
     risk_free_rate = 0.03 # 3% risk-free rate
     
-    # Deterministic simulation of ratios
+    # Deterministic simulation of ratios using ticker hash
     beta = 0.7 + (ticker_hash / 100.0) # 0.7 to 1.7
     std_dev = 0.1 + (ticker_hash / 500.0) # 0.1 to 0.3
     mock_return = benchmark_return * (beta + (ticker_hash % 5) / 100.0)
@@ -68,16 +74,25 @@ def get_financial_metrics(ticker):
 
 # --- 2. Helper Function for OCR and Save ---
 def analyze_and_save(image_data, filename):
+    """
+    Main orchestration logic:
+    1. Extracts text from image using Azure AI Vision OCR.
+    2. Parses extracted text for stock tickers, quantities, and prices.
+    3. Fetches valuation metrics for each identified asset.
+    4. Saves the consolidated portfolio record to Azure Cosmos DB.
+    """
     endpoint = os.environ["VISION_ENDPOINT"]
     key = os.environ["VISION_KEY"]
     cosmos_url = os.environ["COSMOS_URL"]
     cosmos_key = os.environ["COSMOS_KEY"]
     
+    # Initialize Azure service clients
     cv_client = ImageAnalysisClient(endpoint=endpoint, credential=AzureKeyCredential(key))
     cosmos_client = CosmosClient(cosmos_url, cosmos_key)
     database = cosmos_client.get_database_client("PortfolioDB")
     container = database.get_container_client("Investments")
 
+    # Perform OCR
     result = cv_client.analyze(image_data=image_data, visual_features=[VisualFeatures.READ])
 
     extracted_text = ""
@@ -95,7 +110,8 @@ def analyze_and_save(image_data, filename):
         "processed_at": str(datetime.datetime.now())
     }
 
-    # Strategy 1: Line-by-line OCR
+    # Strategy 1: Line-by-line OCR parsing
+    # Typically used for tabular screenshots where ticker and values are on separate lines
     lines = [l.strip() for l in extracted_text.split('\n') if l.strip()]
     for i, line in enumerate(lines):
         # Improved Regex: Allow 2-7 chars, alphanumeric and dots, must start with letter
@@ -130,7 +146,7 @@ def analyze_and_save(image_data, filename):
                     "advanced_metrics": metrics.get("advanced_metrics", {})
                 })
 
-    # Strategy 2: Same-line format fallback
+    # Strategy 2: Same-line format fallback (e.g., "AAPL 10 150.25")
     if not portfolio_data["assets"]:
         matches = re.findall(r'([A-Z]{2,5})\s+([\d,]+)\s+\$?([\d\.]+)', extracted_text)
         for name, qty, price in matches:
@@ -148,12 +164,17 @@ def analyze_and_save(image_data, filename):
                 "advanced_metrics": metrics.get("advanced_metrics", {})
             })
 
+    # Save to Cosmos DB
     container.upsert_item(portfolio_data)
     return portfolio_data
 
 # --- 2. API: Get All Portfolios ---
 @app.route(route="get_portfolios", methods=["GET"])
 def get_portfolios(req: func.HttpRequest) -> func.HttpResponse:
+    """
+    HTTP Endpoint: Retrieves all processed portfolios from the database.
+    Results are ordered by the processing timestamp (most recent first).
+    """
     logging.info("API: Fetching all portfolios.")
     cosmos_url = os.environ["COSMOS_URL"]
     cosmos_key = os.environ["COSMOS_KEY"]
@@ -167,6 +188,10 @@ def get_portfolios(req: func.HttpRequest) -> func.HttpResponse:
 # --- 3. API: Direct Upload and Process ---
 @app.route(route="upload", methods=["POST"])
 def upload_and_process(req: func.HttpRequest) -> func.HttpResponse:
+    """
+    HTTP Endpoint: Accepts raw image binary data via POST, processes it immediately,
+    and returns the analyzed portfolio data.
+    """
     logging.info("API: Direct upload triggered.")
     try:
         if not req.get_body():
@@ -182,5 +207,9 @@ def upload_and_process(req: func.HttpRequest) -> func.HttpResponse:
 @app.function_name(name="ProcessPortfolio")
 @app.blob_trigger(arg_name="myblob", path="screenshots/{name}", connection="portfolioaccount9914_STORAGE")
 def process_portfolio(myblob: func.InputStream):
+    """
+    Azure Blob Trigger: Automatically runs when a new image is uploaded to 
+    the 'screenshots' container in Azure Blob Storage.
+    """
     logging.info(f"Background Trigger: processing {myblob.name}")
     analyze_and_save(myblob.read(), myblob.name)
