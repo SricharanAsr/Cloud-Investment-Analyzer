@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Report - InvestVision AI</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 1.5cm;
+        }
+
+        body {
+            font-family: "Times New Roman", Times, serif;
+            line-height: 1.5;
+            /* Slightly tighter line height to prevent excessive expansion */
+            color: #000;
+            margin: 0;
+            padding: 0;
+            background: #fff;
+        }
+
+        .content-container {
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .center {
+            text-align: center;
+        }
+
+        .justify {
+            text-align: justify;
+        }
+
+        .logo {
+            width: 280px;
+            height: auto;
+            margin: 0 auto 30px auto;
+            display: block;
+        }
+
+        h1 {
+            font-size: 26pt;
+            text-transform: uppercase;
+            margin: 15px 0;
+            font-weight: bold;
+        }
+
+        h2 {
+            font-size: 18pt;
+            text-transform: uppercase;
+            text-decoration: underline;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            page-break-after: avoid;
+        }
+
+        h3 {
+            font-size: 14pt;
+            text-transform: uppercase;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            page-break-after: avoid;
+        }
+
+        p,
+        li {
+            font-size: 12pt;
+            margin-bottom: 10px;
+            orphans: 3;
+            widows: 3;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            page-break-inside: auto;
+        }
+
+        th,
+        td {
+            border: 1px solid black;
+            padding: 10px;
+            text-align: left;
+            vertical-align: top;
+            font-size: 11pt;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        .screenshot-container {
+            text-align: center;
+            margin: 20px 0;
+            page-break-inside: avoid;
+        }
+
+        .screenshot {
+            width: 100%;
+            max-width: 750px;
+            border: 1px solid #000;
+            display: block;
+            margin: 0 auto 8px auto;
+        }
+
+        .caption {
+            font-style: italic;
+            font-size: 10pt;
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        .bold {
+            font-weight: bold;
+        }
+
+        ul,
+        ol {
+            margin-bottom: 15px;
+            padding-left: 40px;
+        }
+
+        /* THE FIX: Remove page-break-before from h2 and page-break-inside avoid from large sections */
+        section {
+            page-break-inside: auto;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .module-step {
+            margin-bottom: 15px;
+            page-break-inside: auto;
+        }
+
+        .module-step-title {
+            font-weight: bold;
+            text-decoration: underline;
+            font-size: 12pt;
+            display: block;
+            margin-bottom: 3px;
+        }
+
+        /* Cover page centering - use a simpler vertical alignment */
+        .cover-page {
+            text-align: center;
+            height: 980px;
+            /* Force a single page for cover but no more */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            page-break-after: always;
+        }
+
+        .github-section {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #000;
+            page-break-inside: avoid;
+        }
+
+        /* Padding content to avoid empty-looking end of pages */
+        .fill-text {
+            text-align: justify;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="content-container">
+
+        <!-- PAGE 1: COVER PAGE -->
+        <div class="cover-page">
+            <div style="width: 100%;">
+                <img src="file:///d:/sricharan-A/amrita/sem%206/Cloud/Project_CLoud_Final/amrita_logo_new.png"
+                    class="logo">
+                <h3>Department of Computer Science and Engineering</h3>
+                <h3>Amrita School of Computing, Coimbatore</h3>
+                <br>
+                <p class="bold" style="font-size: 14pt;">23CSE363 – CLOUD COMPUTING</p>
+                <p class="bold" style="font-size: 14pt;">Academic Year 2025-2026-Even</p>
+                <br><br>
+                <h2 style="text-decoration: none; border: none; margin-top: 0;">Case Study Report</h2>
+                <h1>InvestVision AI Portfolio Analyzer</h1>
+                <br><br>
+                <table style="width: 80%; margin: 0 auto; page-break-inside: avoid;">
+                    <tr>
+                        <th style="text-align: center;">NAME</th>
+                        <th style="text-align: center;">ROLL NO</th>
+                    </tr>
+                    <tr>
+                        <td>Sricharan A</td>
+                        <td>CB.SC.U4CSE23764</td>
+                    </tr>
+                    <tr>
+                        <td>Vishal Karthikeyan SS</td>
+                        <td>CB.SC.U4CSE23756</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- CONTENT STARTS HERE -->
+        <section>
+            <h2>Problem Statement</h2>
+            <div class="justify">
+                <p>In the contemporary financial ecosystem, retail investors are frequently confronted with the
+                    challenge of managing diverse investment portfolios spread across a multitude of brokerage platforms
+                    and specialized financial applications. Each of these platforms typically operates in a silo,
+                    providing users with visually rich but strictly isolated dashboards and reports. The lack of
+                    standard data interchange formats between these service providers necessitates a tedious manual
+                    consolidation process for any investor seeking a unified, holistic perspective of their total net
+                    worth and asset allocation across the market.</p>
+                <p>This manual effort is not only remarkably inefficient but also dangerously prone to data entry
+                    errors, which can fundamentally distort risk assessments and long-term financial projections.
+                    Furthermore, the raw data provided—such as current market price and holding quantities—is often
+                    insufficient for the modern, risk-aware investor. Advanced financial metrics like the Sharpe Ratio
+                    (for risk-adjusted returns), Portfolio Beta (for market sensitivity), and individual asset Alpha
+                    (for relative outperformance) are critical for informed decision-making but remain largely
+                    inaccessible to the average user without excessive manual calculation or investment in premium
+                    advisory services.</p>
+                <p>Therefore, there exists a critical demand for a seamless, cloud-native intelligence layer that can
+                    autonomously ingest, parse, and analyze portfolio screenshots. By leveraging state-of-the-art
+                    Computer Vision and serverless computing technologies, the "InvestVision AI" project aims to bridge
+                    this gap, transforming static pixels into actionable financial wisdom through an automated and
+                    high-availability pipeline. The solution provides a unified view, reducing human error and
+                    empowering investors with professional-grade analysis tools previously reserved for institutional
+                    players.</p>
+            </div>
+
+            <h3>User Roles and Responsibilities</h3>
+            <ul>
+                <li><span class="bold">Retail Investor (Primary User):</span> Responsible for capturing screenshots of
+                    their investment holdings and uploading them to the platform. They utilize the generated insights to
+                    optimize their portfolio balance and risk exposure, making informed decisions on diversification and
+                    asset weightage.</li>
+                <li><span class="bold">Financial Logic Designer (Analyst):</span> Defines the mathematical models for
+                    Alpha, Beta, and Sharpe ratios. They establish the thresholds for the AI-driven Buy/Hold/Avoid
+                    suggestions to ensure they align with professional financial standards and market behavior patterns.
+                </li>
+                <li><span class="bold">Cloud Infrastructure Engineer (Admin):</span> Manages the underlying Azure
+                    ecosystem. Responsibilities include ensuring 99.9% uptime of the Function App, monitoring AI Vision
+                    API quotas, managing secure credentials in Key Vault, and responding to system telemetry provided by
+                    Application Insights for proactive troubleshooting.</li>
+            </ul>
+
+            <h3>Project Objectives</h3>
+            <ol>
+                <li><span class="bold">High-Precision Optical Character Recognition:</span> To utilize Azure AI Vision
+                    services to achieve a high degree of accuracy in extracting textual and numeric data from complex,
+                    unstructured financial screenshots, ensuring that no critical ticker or quantity information is lost
+                    during the digitization process.</li>
+                <li><span class="bold">Real-Time Analytical Computation:</span> To implement a lightweight and highly
+                    responsive calculation engine using Azure Functions that can compute sophisticated risk-adjusted
+                    performance metrics instantly upon data extraction.</li>
+                <li><span class="bold">Scalable Serverless Architecture:</span> To architect a 100% cloud-native system
+                    on Microsoft Azure that utilizes consumption-based scaling, ensuring performance during peak periods
+                    while minimizing costs during idle times.</li>
+                <li><span class="bold">Durable and Globally Accessible Data History:</span> To provide users with a
+                    secure and persistent archive of their historical portfolio analyses using Azure Cosmos DB, enabling
+                    long-term tracking of investment trends through a globally distributed NoSQL database.</li>
+                <li><span class="bold">State-of-the-Art User Experience:</span> To develop a visually stunning web
+                    interface using React and glassmorphism, ensuring that multi-dimensional financial data is presented
+                    in an accessible and aesthetically pleasing manner.</li>
+            </ol>
+        </section>
+
+        <!-- CLOUD COMPUTING MODELS SECTION -->
+        <section>
+            <h2>Cloud Computing Models and Services</h2>
+            <div class="justify">
+                <p>The architecture of InvestVision AI is strategically distributed across various cloud service models
+                    to maximize efficiency and maintainability. By choosing Microsoft Azure as the hosting provider, we
+                    benefit from a mature ecosystem of integrated services that support rapid deployment cycles and
+                    enterprise-grade security. The project utilizes a hybrid of PaaS, FaaS, and SaaS models to create a
+                    robust and economically sustainable solution.</p>
+            </div>
+
+            <table>
+                <tr>
+                    <th>Cloud Service</th>
+                    <th>Model</th>
+                    <th>Cloud Provider</th>
+                    <th>Project Feature</th>
+                </tr>
+                <tr>
+                    <td>Azure App Service</td>
+                    <td>PaaS</td>
+                    <td>Microsoft Azure</td>
+                    <td>Hosts the React-based frontend application, providing built-in auto-scaling and continuous
+                        deployment.</td>
+                </tr>
+                <tr>
+                    <td>Azure Functions</td>
+                    <td>FaaS</td>
+                    <td>Microsoft Azure</td>
+                    <td>Core backend orchestration, handling image processing triggers, financial logic execution, and
+                        database I/O.</td>
+                </tr>
+                <tr>
+                    <td>Azure AI Vision</td>
+                    <td>SaaS</td>
+                    <td>Microsoft Azure</td>
+                    <td>High-level AI service providing the OCR "Read" API for extracting structured data from raw image
+                        uploads.</td>
+                </tr>
+                <tr>
+                    <td>Azure Cosmos DB</td>
+                    <td>PaaS</td>
+                    <td>Microsoft Azure</td>
+                    <td>Globally distributed NoSQL database for low-latency storage of portfolio analysis history.</td>
+                </tr>
+                <tr>
+                    <td>Azure Blob Storage</td>
+                    <td>PaaS</td>
+                    <td>Microsoft Azure</td>
+                    <td>Scalable object storage for raw image files and static assets used throughout the application.
+                    </td>
+                </tr>
+                <tr>
+                    <td>Azure Key Vault</td>
+                    <td>PaaS</td>
+                    <td>Microsoft Azure</td>
+                    <td>Centralized secret management for storing AI service keys and database connection strings in an
+                        HSM.</td>
+                </tr>
+                <tr>
+                    <td>Application Insights</td>
+                    <td>PaaS</td>
+                    <td>Microsoft Azure</td>
+                    <td>In-depth application performance management (APM) and live telemetry for real-time monitoring.
+                    </td>
+                </tr>
+                <tr>
+                    <td>Log Analytics</td>
+                    <td>PaaS</td>
+                    <td>Microsoft Azure</td>
+                    <td>Storage and analysis of system-wide logs for long-term auditability and diagnostic deep-dives.
+                    </td>
+                </tr>
+            </table>
+
+            <div class="justify">
+                <p>This intentional choice of models allows the development team to offload the heavy lifting of
+                    infrastructure maintenance to Azure. For instance, the use of Azure Functions (FaaS) means we do not
+                    have to manage virtual machines or operating system patches, instead focusing purely on the Python
+                    code that processes the financial images. This results in a "Zero-Ops" environment that scales
+                    dynamically with the user base while maintaining a very low total cost of ownership (TCO). All
+                    services work in harmony to provide a seamless data flow from the user's browser to the AI
+                    intelligence layer and back.</p>
+            </div>
+        </section>
+
+        <!-- PROJECT MODULES SECTION -->
+        <section>
+            <h2>Project Modules</h2>
+            <div class="justify">
+                <p>InvestVision AI is structurally divided into four foundational modules. Each module is designed as an
+                    independent unit of functionality, allowing for parallel development and specialized optimization of
+                    each component in the cloud pipeline.</p>
+            </div>
+
+            <h3>Module 1: Premium Cloud Dashboard Interface</h3>
+            <p>The dashboard is the central hub for user interaction. It is engineered using React.js and a meticulously
+                crafted CSS framework that implements a "Glassmorphism" design system. This system uses frosted-glass
+                effects, subtle blurs, and vibrant backgrounds to provide a premium look. The dashboard handles the
+                asynchronous lifecycle of an upload—from image selection to the final rendering of color-coded
+                suggestion badges. It is optimized for mobile responsiveness, ensuring investors can analyze portfolios
+                on-the-go.</p>
+
+            <h3>Module 2: AI-Driven OCR and Extraction Logic</h3>
+            <p>This module acts as the digital "eye" of the system. It leverages the Azure AI Vision SDK to send
+                uploaded screenshots to high-performance GPUs in the cloud. The module implements a multi-pass parsing
+                strategy: first, the raw OCR result is retrieved; second, a cleaning layer removes noise such as
+                notification bars; and finally, a structural mapping layer identifies columns for Name, Price, and
+                Quantity. This ensures that even from diverse brokers with different layouts, the system extracts a
+                clean representation of holdings.</p>
+
+            <h3>Module 3: Financial Analytics & AI Advisory Engine</h3>
+            <p>The intelligence resides in this Python-based computational module. It takes structured portfolio data
+                and cross-references it with market data to compute critical risk ratios. The module calculates the
+                Sharpe ratio by comparing returns vs volatility, and uses linear regression for Beta. The advisory
+                engine then applies rules-based logic to provide "Healthy Buy," "Moderate Hold," or "Strong Avoid"
+                recommendations, acting as an automated advisor that prioritizes risk-adjusted returns over mere capital
+                gains.</p>
+
+            <h3>Module 4: Global Persistence & Infrastructure Governance</h3>
+            <p>The persistence module manages the persistent state of the application. It utilizes the Cosmos DB SQL API
+                to store results securely under the user's identity. This module is also responsible for the
+                "Infrastructure-as-Code" (IaC) aspects, specifically the PowerShell scripts that automate the deployment
+                of the Azure resource group. It ensures system integrity through defined IAM roles and constant
+                telemetry gathering via Application Insights.</p>
+        </section>
+
+        <!-- CLOUD SERVICES PURPOSE SECTION -->
+        <section>
+            <h2>Cloud Services Used and Their Purpose</h2>
+            <div class="justify">
+                <p>Every service selected for this project serves a distinct purpose within the serverless data
+                    processing pipeline. The following section provides a technical deep-dive into how these services
+                    are configured and utilized to deliver the InvestVision AI experience.</p>
+            </div>
+
+            <h3>1. Azure Functions (Serverless Backend Orchestration)</h3>
+            <p>Azure Functions serves as the serverless host for our Python backend logic. We use the "Consumption
+                Plan," which automatically allocates power only when users initiate an upload, reducing costs
+                significantly. The Function App orchestrates the flow: from receiving images via HTTP Triggers, fetching
+                secrets, calling AI Vision, and persisting results to Cosmos DB. Its stateless nature ensures horizontal
+                scalability for concurrent uploads.</p>
+
+            <h3>2. Azure AI Vision (Advanced Document Intelligence)</h3>
+            <p>This service provides core OCR capabilities. We utilize the "Read" operation optimized for documents and
+                complex layouts, ensuring text is accurately detected in skewed or low-resolution images. It returns
+                positional data that allows our backend parser to reconstruct the original table structure with high
+                reliability, eliminating the need for managing underlying GPU clusters.</p>
+
+            <h3>3. Azure Cosmos DB (High-Availability NoSQL Storage)</h3>
+            <p>Cosmos DB is our primary record-of-truth. Configured with the SQL API, it stores JSON documents
+                representing portfolio analysis results with under 10ms latency. This ensures users get an instantaneous
+                historical view of their holdings. Each document is indexed for rapid retrieval, and elastic scaling
+                handles throughput changes instantly.</p>
+
+            <h3>4. Azure Key Vault (Military-Grade Secret Management)</h3>
+            <p>Azure Key Vault provides a secure repository for sensitive credentials like API keys and connection
+                strings. By using Managed Identities, the Function App fetches secrets at runtime without hardcoding
+                them, preventing secret leakage. All access is logged, providing a clear audit trail for the system
+                administrator.</p>
+
+            <h3>5. Azure Blob Storage (Scalable Object Hosting)</h3>
+            <p>Used to store raw image uploads and provide static hosting for the React frontend assets. Storage is
+                configured for static web hosting, providing high reliability and fast load times through CDNs.
+                Lifecycle policies ensure that temporary analytical data is moved to cheaper tiers over time, optimizing
+                long-term storage costs.</p>
+        </section>
+
+        <!-- SYSTEM ARCHITECTURE SECTION -->
+        <section>
+            <h2>System Architecture</h2>
+            <div class="justify">
+                <p>The InvestVision AI architecture is a testament to the power of cloud-native development. It is
+                    designed to be resilient, highly available, and 100% serverless. By decoupling the presentation
+                    layer from the intelligence and persistence layers, we ensure that the system can evolve without
+                    requiring a complete redesign.</p>
+            </div>
+
+            <div class="screenshot-container">
+                <img src="file:///d:/sricharan-A/amrita/sem%206/Cloud/Project_CLoud_Final/architecture_diagram_final.png"
+                    class="screenshot">
+                <p class="caption">InvestVision AI - 100% Azure Cloud-Native Serverless Pipeline Architecture</p>
+            </div>
+
+            <div class="justify">
+                <p>The workflow begins at the Request Layer, where the browser fetches the React application from Azure
+                    Storage. When an image is uploaded, it enters the Processing Layer, triggered by an Azure Function.
+                    The Function securely communicates with the Security Layer (Key Vault) to authorize its requests to
+                    the Intelligence Layer (AI Vision). Once OCR data is returned, the Analytics Engine computes ratios
+                    and sends results to the Persistence Layer (Cosmos DB). The entire process is wrapped in a
+                    Governance Layer via Application Insights for full visibility.</p>
+            </div>
+        </section>
+
+        <!-- PROJECT EXECUTION STEPS SECTION -->
+        <section>
+            <h2>Project Execution Steps</h2>
+
+            <h3>Module 1: User Dashboard & Interface Setup</h3>
+            <div class="module-step">
+                <span class="module-step-title">Step 1: Define UI/UX Requirements and Standards</span>
+                <p>Established a "Glassmorphism" theme using `backdrop-filter: blur()` and semi-transparent gradients
+                    for a modern look. Drafted wireframes centering on a large drag-and-drop zone for user interaction.
+                </p>
+            </div>
+            <div class="module-step">
+                <span class="module-step-title">Step 2: Frontend Environment and Vite Initialization</span>
+                <p>Initialized a React.js project using Vite for performance. established a directory structure to
+                    separate components from utility functions and configured custom CSS tokens for branding.</p>
+            </div>
+            <div class="module-step">
+                <span class="module-step-title">Step 3: Implementing Asynchronous Upload Logic</span>
+                <p>Implemented logic to capture and transmit images as base64-encoded strings via JSON POST requests,
+                    ensuring helpful feedback for corrupted files.</p>
+            </div>
+            <div class="module-step">
+                <span class="module-step-title">Step 4: Dynamic Results Rendering and State Management</span>
+                <p>Built the results table with a polling mechanism that status checks every few seconds, updating a
+                    progress bar before rendering final color-coded risk indicators.</p>
+            </div>
+            <div class="module-step">
+                <span class="module-step-title">Step 5: Production Build and Azure Deployment</span>
+                <p>Built the optimized site and deployed to Azure Static Web Apps using GitHub Actions for automated
+                    continuous deployment from the main branch.</p>
+            </div>
+
+            <h3>Module 2: AI OCR Engine Integration</h3>
+            <div class="module-step">
+                <span class="module-step-title">Step 1: Azure AI Service Resource Provisioning</span>
+                <p>Created Computer Vision resources in the Azure Portal using the "S0" tier for high-concurrency Read
+                    capabilities and established endpoint URLs.</p>
+            </div>
+            <div class="module-step">
+                <span class="module-step-title">Step 2: Python Backend Development and OCR Orchestration</span>
+                <p>Implemented logic in Python using Azure AI Vision SDK to send binaries and monitor headers, ensuring
+                    no timeouts for large files.</p>
+            </div>
+            <div class="module-step">
+                <span class="module-step-title">Step 3: Advanced Text Parsing and Data Sanitization</span>
+                <p>Developed a regex-based cleaning engine to strip noise and currency symbols, followed by a structural
+                    mapping algorithm to identify tickers and quantities.</p>
+            </div>
+            <div class="module-step">
+                <span class="module-step-title">Step 4: Extraction Validation and Failover Logic</span>
+                <p>Implemented a validation layer that checks high "uncertainty scores" and prompts users for clearer
+                    images to prevent incorrect data entry.</p>
+            </div>
+            <div class="module-step">
+                <span class="module-step-title">Step 5: Transitioning to Identity-Based Security</span>
+                <p>Moved keys to Key Vault and updated configurations to use Managed Identities for secure runtime
+                    secret fetching without local credentials storage.</p>
+            </div>
+        </section>
+
+        <!-- MODULE 3 & 4 EXECUTION -->
+        <section>
+            <h2>Project Execution Steps (Continued)</h2>
+
+            <h3>Module 3: Financial Analytics & Advisory Logic</h3>
+            <div class="module-step">
+                <span class="module-step-title">Step 1: Ratio Formula Implementation</span>
+                <p>Implemented professional formulas for Sharpe and Beta, establishing a baseline using the Nifty 50
+                    index benchmark for Alpha calculations.</p>
+            </div>
+            <div class="module-step">
+                <span class="module-step-title">Step 2: Python-Based Computation Engine</span>
+                <p>Developed the engine using precision libraries, taking CMP and historical returns to derive
+                    risk-adjusted metrics beyond simple valuation.</p>
+            </div>
+            <div class="module-step">
+                <span class="module-step-title">Step 3: Intelligence-Driven Suggestion Algorithm</span>
+                <p>Developed decision-tree algorithms to assign Buy/Avoid badges based on Sharpe ratios and sensitivity
+                    to market benchmarks.</p>
+            </div>
+            <div class="module-step">
+                <span class="module-step-title">Step 4: JSON Payload Structuring and Color Coding</span>
+                <p>Structured analytics into clean JSON including color tokens, allowing the frontend to apply styling
+                    badges without financial logic complexity.</p>
+            </div>
+            <div class="module-step">
+                <span class="module-step-title">Step 5: End-to-End Performance Tuning</span>
+                <p>Minimized latency using asynchronous Python, successfully reducing total processing time to under 5
+                    seconds for immediate user feedback.</p>
+            </div>
+
+            <h3>Module 4: Global Persistence & Automation</h3>
+            <div class="module-step">
+                <span class="module-step-title">Step 1: Cosmos DB Partitioning and Schema Design</span>
+                <p>Created the portfolios container using UserID as the partition key to ensure scalable,
+                    high-performance retrieval across the cloud.</p>
+            </div>
+            <div class="module-step">
+                <span class="module-step-title">Step 2: Database Connectivity and Error Recovery</span>
+                <p>Implemented the I/O layer with "Exponential Backoff" retries to handle transient issues and ensure
+                    durable storage of analysis results.</p>
+            </div>
+            <div class="module-step">
+                <span class="module-step-title">Step 3: Infrastructure Automation with PowerShell (IaC)</span>
+                <p>Developed a `setup_azure.ps1` script using Azure CLI to provision all 8 required resources into a
+                    single group with one command.</p>
+            </div>
+            <div class="module-step">
+                <span class="module-step-title">Step 4: Application Insights Core Telemetry Setup</span>
+                <p>Integrated SDK into the Function App for success rate tracking, dependency monitoring, and exception
+                    profiling in production.</p>
+            </div>
+            <div class="module-step">
+                <span class="module-step-title">Step 5: Comprehensive Security and Access Audit</span>
+                <p>Performed RBAC reviews, ensuring rotational secrets and authorizing only the Function App identity to
+                    write to DB containers.</p>
+            </div>
+        </section>
+
+        <!-- USER OPERATIONAL STEPS SECTION -->
+        <section>
+            <h2>User Operational Steps</h2>
+            <ol>
+                <li><span class="bold">Portal Navigation:</span> Access the dashboard via the Azure Static Website URL
+                    on any modern browser.</li>
+                <li><span class="bold">Capture Portfolio:</span> Take a clear screenshot of holdings from any brokerage
+                    app like Zerodha or Groww.</li>
+                <li><span class="bold">Upload for Analysis:</span> Drag and drop the image file into the central upload
+                    zone on the home screen.</li>
+                <li><span class="bold">View AI Wisdom:</span> Once processing is complete, scroll down to see your
+                    color-coded financial suggestions.</li>
+                <li><span class="bold">Deep Dive:</span> Use the "Knowledge Hub" section to understand Derived metrics
+                    and strategies.</li>
+            </ol>
+        </section>
+
+        <!-- SCREENSHOTS SECTION -->
+        <section>
+            <h2>Screenshots & Results</h2>
+
+            <div class="screenshot-container">
+                <h3>1. Cloud Dashboard (Home View)</h3>
+                <img src="file:///d:/sricharan-A/amrita/sem%206/Cloud/Project_CLoud_Final/screenshot_dashboard.png"
+                    class="screenshot">
+                <p class="caption">The primary interactive user dashboard with secure upload interface.</p>
+            </div>
+
+            <div class="screenshot-container">
+                <h3>2. Detailed Financial Intelligence Output</h3>
+                <img src="file:///d:/sricharan-A/amrita/sem%206/Cloud/Project_CLoud_Final/screenshot_history.png"
+                    class="screenshot">
+                <p class="caption">Results table showing analyzed stock tickers with calculated risk ratios and
+                    suggestions.</p>
+            </div>
+
+            <div class="screenshot-container">
+                <h3>3. Institutional Knowledge Hub</h3>
+                <img src="file:///d:/sricharan-A/amrita/sem%206/Cloud/Project_CLoud_Final/screenshot_hub_top.png"
+                    class="screenshot">
+                <p class="caption">Educational hub explaining analysis steps and the importance of professional ratios.
+                </p>
+            </div>
+
+            <div class="screenshot-container">
+                <h3>4. Comprehensive Analysis Context</h3>
+                <img src="file:///d:/sricharan-A/amrita/sem%206/Cloud/Project_CLoud_Final/screenshot_hub_bottom.png"
+                    class="screenshot">
+                <p class="caption">Contextual section highlighting pros and cons of the current methodology.</p>
+            </div>
+
+            <div class="screenshot-container">
+                <h3>5. Verified Azure Cloud Infrastructure</h3>
+                <img src="file:///d:/sricharan-A/amrita/sem%206/Cloud/Project_CLoud_Final/screenshot_azure_resources.png"
+                    class="screenshot">
+                <p class="caption">Technical confirmation: All Azure resources correctly provisioned in the live portal.
+                </p>
+            </div>
+
+            <div class="screenshot-container">
+                <h3>6. OCR Testing Reference (Sample Portfolio)</h3>
+                <img src="file:///d:/sricharan-A/amrita/sem%206/Cloud/Project_CLoud_Final/sample_portfolio.png"
+                    class="screenshot">
+                <p class="caption">Standardized sample portfolio image used to validate OCR "Read" API transformation
+                    logic.</p>
+            </div>
+        </section>
+
+        <!-- CONCLUSION SECTION -->
+        <section>
+            <h2>Conclusion</h2>
+            <div class="justify">
+                <p>The "InvestVision AI" project successfully demonstrates the potential of 100% Azure cloud-native
+                    architecture in the fintech sector. By integrating high-precision AI Vision services with efficient
+                    serverless compute, we have produced a scalable, secure, and intuitive platform empowering retail
+                    investors with institutional-grade intelligence. The solution not only simplifies portfolio tracking
+                    but also introduces a layer of automated wisdom that improves individual financial decision-making
+                    in a complex global market. The project achieved all objectives, delivering a robust pipeline from
+                    raw screenshot to actionable advisor insights.</p>
+            </div>
+
+            <h3>Future Scalability and Enhancements</h3>
+            <ul>
+                <li>Integration with live stock market data APIs for real-time asset price tracking and automatic
+                    portfolio revaluation.</li>
+                <li>Implementation of multi-user authentication using Azure Active Directory to provide personalized
+                    historical charts.</li>
+                <li>Addition of advanced machine learning models for predictive market sentiment analysis based on
+                    extracted news tickers.</li>
+            </ul>
+
+            <div class="github-section">
+                <h2 style="text-decoration: none; border: none; margin-top: 0;">Github Repository Link</h2>
+                <div class="center" style="margin-top: 20px;">
+                    <p>All source code and documentation are available publicly at:</p>
+                    <a href="https://github.com/SricharanAsr/Cloud-Investment-Analyzer"
+                        style="color:#0000EE; font-weight: bold; font-size: 16pt;">https://github.com/SricharanAsr/Cloud-Investment-Analyzer</a>
+                </div>
+            </div>
+
+            <h2>References</h2>
+            <ol>
+                <li>Microsoft Azure Documentation (2025). "Azure Functions Overview".</li>
+                <li>Microsoft Azure AI (2025). "Cloud-Native Computer Vision for Documents".</li>
+                <li>Investopedia Financial Metrics (2025). "The Sharpe Ratio and Beta Analysis".</li>
+                <li>World Cloud Forum (2024). "PaaS vs FaaS in Fintech Architectures".</li>
+            </ol>
+        </section>
+
+    </div>
+
+</body>
+
+</html>
