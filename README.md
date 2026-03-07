@@ -48,6 +48,11 @@ If your portfolio isn't being parsed:
 - **Format**: The analyzer looks for a **Ticker Symbol** followed by **Quantity** and **Price** in subsequent lines.
 - **Ticker Style**: Supports standard 2-7 character alphanumeric symbols (e.g., `AAPL`, `BTC`, `BRK.B`).
 
+## 📄 Project Documentation
+A comprehensive 12-page project report has been prepared, detailing the architecture, implementation, and Azure-native serverless strategy used in this project.
+- **Project Report**: [Project_Report_Formatted.pdf](Project_Report_Formatted.pdf)
+- **Architecture Diagram**: [architecture_diagram_final.png](architecture_diagram_final.png)
+
 ## 🤝 Contributing
 Contributions are welcome! Please read our [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.
 
@@ -59,6 +64,5 @@ Contributions are welcome! Please read our [CONTRIBUTING.md](CONTRIBUTING.md) fo
 ## 📝 License
 This project is for educational and professional demonstration purposes. It is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
----
 ---
 © 2026 InvestVision AI | Powered by Azure AI & Cloud
