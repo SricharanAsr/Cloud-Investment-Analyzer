@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloud-news-frontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: cloud-news
+  template:
+    metadata:
+      labels:
+        app: cloud-news
+    spec:
+      containers:
+      - name: frontend
+        image: 992382753275.dkr.ecr.us-east-1.amazonaws.com/cloud-news-frontend:latest
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cloud-news-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: cloud-news
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
