@@ -20,32 +20,17 @@ This project demonstrates my practical implementation of containerizing and depl
 ---
 
 ## Infrastructure Implementation Steps
-
-### 1. Environment Preparation
-- **Tooling**: Installed AWS CLI, `kubectl` (K8s client), `eksctl` (EKS CLI), and Docker Desktop.
-- **Authentication**: Configured AWS CLI with session-based credentials from the AWS Academy Learner Lab.
-
-### 2. Application Containerization
-- **Frontend Development**: Created a semantic HTML5 news article about Cloud Computing.
-- **Dockerization**: Wrote a `Dockerfile` using the lightweight `nginx:alpine` base image.
-- **Build**: Built the local image: `docker build -t cloud-news-frontend .`.
-
-### 3. Registry Setup (ECR)
-- **Repo Creation**: Created a private repository in Amazon ECR.
-- **Push**: Authenticated Docker to ECR, tagged the local image, and pushed it to the cloud registry.
-
-### 4. EKS Cluster Provisioning
-- **Configuration**: Defined a `cluster.yaml` to specify the use of the pre-existing `LabRole` (mandatory for AWS Academy).
-- **Deployment**: Used `eksctl create cluster -f cluster.yaml` to provision the VPC, control plane, and managed node group.
-
-### 5. Kubernetes Orchestration
-- **Manifests**: Created a `Deployment` (replicas=2) and a `Service` (type=LoadBalancer).
-- **Apply**: Deployed the manifests using `kubectl apply -f k8s-deploy.yaml`.
-- **Exposure**: The LoadBalancer generated a unique DNS name to access the site publicly.
+...
+### 6. Modernization and Automation (Added Enhancements)
+- **UI/UX**: Refactored the frontend with a premium dark-themed design system using Google Fonts (`Inter`, `Outfit`) and modern CSS variables.
+- **CI/CD**: Implemented a GitHub Actions workflow to automate the multi-environment deployment lifecycle.
+- **Automation**: Created a PowerShell deployment script (`deploy.ps1`) for local automation.
+- **Hardening**: Added resource quotas and health probes to Kubernetes manifests to ensure application stability.
 
 ---
 
 ## Final Results
 - **URL**: [http://a103019166e4a478a9670abdc7a0790e-347212273.us-east-1.elb.amazonaws.com](http://a103019166e4a478a9670abdc7a0790e-347212273.us-east-1.elb.amazonaws.com)
+- **Git History**: 17 structured commits documenting the evolution from a basic static site to a production-ready EKS deployment.
 - **Redundancy**: 2 active pods running across multiple nodes for high availability.
-- **Scalability**: The Managed Node Group is configured to scale between 1 and 3 nodes automatically.
+- **Scalability**: Managed Node Group scaling (1-3 nodes) ensures cost-efficiency and performance.
