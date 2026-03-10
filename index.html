@@ -9,16 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <style>
-        /* Temporary inline styles until styles.css is ready */
-        body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #f8fafc; margin: 0; padding: 0; }
-        .container { max-width: 900px; margin: 0 auto; padding: 0 20px; }
-        .app-container { min-height: 100vh; display: flex; flex-direction: column; }
-        .site-header { padding: 40px 0; background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); border-bottom: 1px solid #334155; }
-        .site-footer { padding: 20px 0; border-top: 1px solid #334155; margin-top: auto; }
-        h1 { margin: 0; font-family: 'Outfit', sans-serif; font-weight: 700; color: #fff; }
-        .accent { color: #38bdf8; }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="app-container">
@@ -29,19 +20,19 @@
         </header>
 
         <main class="content-wrapper container">
-            <article id="article" class="featured-post" style="padding: 60px 0;">
+            <article id="article" class="featured-post">
                 <header class="article-header">
-                    <div class="category" style="color: #38bdf8; text-transform: uppercase; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.1em; margin-bottom: 12px;">Cloud Infrastructure</div>
-                    <h2 style="font-size: 2.5rem; margin-top: 0; font-family: 'Outfit', sans-serif;">The Future of Enterprise: Cloud Computing</h2>
-                    <div class="meta" style="color: #94a3b8; font-size: 0.9rem;">
+                    <div class="category">Cloud Infrastructure</div>
+                    <h2>The Future of Enterprise: Cloud Computing</h2>
+                    <div class="meta">
                         <span class="date">March 11, 2026</span>
                     </div>
                 </header>
                 
-                <section class="article-content" style="line-height: 1.8; color: #cbd5e1; font-size: 1.125rem;">
-                    <p class="lead" style="font-size: 1.25rem; color: #f8fafc;">Cloud computing has revolutionized the way businesses operate, providing scalable, on-demand access to computing resources. From startups to global enterprises, the shift towards cloud-native architectures is accelerating.</p>
+                <section class="article-content">
+                    <p class="lead">Cloud computing has revolutionized the way businesses operate, providing scalable, on-demand access to computing resources. From startups to global enterprises, the shift towards cloud-native architectures is accelerating.</p>
                     
-                    <div class="highlight-box" style="background: #1e293b; padding: 20px; border-left: 4px solid #38bdf8; margin: 30px 0; border-radius: 0 8px 8px 0;">
+                    <div class="highlight-box">
                         <p><strong>Amazon EKS (Elastic Kubernetes Service)</strong> stands at the forefront of this transformation, allowing developers to deploy, manage, and scale containerized applications with ease.</p>
                     </div>
 
@@ -52,7 +43,7 @@
 
         <footer class="site-footer">
             <div class="container">
-                <p style="color: #64748b; font-size: 0.875rem;">&copy; 2026 Cloud Computing Project. Deployed via Amazon EKS on AWS Academy.</p>
+                <p>&copy; 2026 Cloud Computing Project. Deployed via Amazon EKS on AWS Academy.</p>
             </div>
         </footer>
     </div>
