@@ -50,15 +50,11 @@ docker run -p 8080:80 cloud-news-frontend
     kubectl get service cloud-news-service
     ```
 
-## Project Structure
+## Lessons Learned
 
-- `index.html`: Main application entry point.
-- `styles.css`: Premium CSS design system.
-- `Dockerfile`: Container definition.
-- `k8s-deploy.yaml`: Kubernetes Deployment and Service.
-- `cluster.yaml`: EKS cluster configuration.
-- `Project_Report.md`: Detailed academic report.
-- `Step_By_Step_Guide.md`: Tutorial for reproduction.
+- **EKS Complexity**: Provisioning a cluster with `eksctl` is straightforward, but IAM permissions (`LabRole`) can be a bottleneck in restricted environments like AWS Academy.
+- **Container Lifecycle**: Proper tagging and registry management (ECR) are critical for smooth Kubernetes deployments.
+- **UI & UX**: Minimal frontend applications benefit significantly from modern CSS features like glassmorphism and specialized typography to feel "premium".
 
 ---
 &copy; 2026 Sricharan | Cloud Computing
