@@ -2,6 +2,11 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: cloud-news-frontend
+  labels:
+    app: cloud-news
+    tier: frontend
+    env: production
+    team: cloud-ops
 spec:
   replicas: 2
   selector:
@@ -11,6 +16,8 @@ spec:
     metadata:
       labels:
         app: cloud-news
+        tier: frontend
+        env: production
     spec:
       containers:
       - name: frontend
