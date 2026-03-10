@@ -39,9 +39,10 @@ body {
 /* Header */
 .site-header {
     padding: 3rem 0;
-    background: linear-gradient(to bottom, rgba(30, 41, 59, 0.5), transparent);
+    background: rgba(30, 41, 59, 0.7);
     border-bottom: 1px solid var(--border);
-    backdrop-filter: blur(8px);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     position: sticky;
     top: 0;
     z-index: 10;
@@ -52,6 +53,11 @@ h1 {
     font-size: 2.25rem;
     font-weight: 700;
     letter-spacing: -0.02em;
+    transition: transform 0.3s ease;
+}
+
+h1:hover {
+    transform: translateY(-2px);
 }
 
 .accent {
@@ -104,11 +110,17 @@ h2 {
 }
 
 .highlight-box {
-    background: var(--bg-card);
+    background: rgba(30, 41, 59, 0.4);
+    backdrop-filter: blur(4px);
     border-left: 4px solid var(--primary);
     padding: 2.5rem;
     margin: 3rem 0;
     border-radius: 0 12px 12px 0;
+    transition: background 0.3s ease;
+}
+
+.highlight-box:hover {
+    background: rgba(30, 41, 59, 0.6);
 }
 
 .highlight-box p {
